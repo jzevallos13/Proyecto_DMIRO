@@ -1,0 +1,22 @@
+{% extends "system_base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head_title %}Hola{%endblock%}
+{% block parrafo %}Inicio de Secion{% endblock %}
+{% block formulario %}
+<form method="POST">{% csrf_token %}
+    {{ el_from | crispy}}
+    <button id="btn1" type="submit" class="save btn btn-default">Save
+    </button>
+</form>
+<div>
+{% for item in query_set %}
+{{ item.nombre }}
+{% endfor %}
+</div>
+{% endblock %}
+{% block graficos %}
+<div id="chart-container">FusionCharts will render here</div>
+<div id="chart-container1">container1</div>
+<div id="chart-container2">container2</div>
+{% endblock %}

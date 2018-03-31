@@ -1,0 +1,269 @@
+{% extends "system_base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content_style_maps %}
+  <style>
+    .google-maps {
+    position: relative;
+    padding-bottom: 75%; // This is the aspect ratio
+    height: 0;
+    overflow: hidden;
+    }
+    .google-maps iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    }
+</style>
+{% endblock %}
+{% block content_detalles %}
+<div id="page-wrapper">
+            <div class="row">
+
+                <div class="col-lg-12">
+
+                    <h1 class="page-header">Dashboard1</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-comments fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">26</div>
+                                    <div>New Comments!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">12</div>
+                                    <div>New Tasks!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">124</div>
+                                    <div>New Orders!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-support fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">13</div>
+                                    <div>Support Tickets!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+            <div class="col-lg-6">
+                
+            <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 
+                            Map
+                            
+                        </div>
+                        <!-- /.panel-heading 
+                        <div class="panel-body">
+                            <div id="morris-area-chart"></div>
+                        </div>-->
+                        <div class="panel-body">
+                        <div id="mapa" style="width:400px ;height:300px">            
+                       </div>             
+                      </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6">
+ 
+                
+            <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Imagenes
+                        </div>
+                        <!-- /.panel-heading 
+                        <div class="panel-body">
+                            <div id="morris-area-chart"></div>
+                        </div>-->
+                        <div class="panel-body">
+                        <div id="mapa" style="width:475px ;height:300px">          
+                       </div>             
+                      </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+
+
+                </div>
+
+        <div class="row"> 
+            <div class="col-xs-6 col-xs-offset-3 centered">
+                    <div class="panel panel-default">
+                        <div id="selecionar-agencia" class="panel-heading">
+                            Seleccione la Agencia
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                        <div id="agencia-seleccionada"></div>
+                        <select id="selectAnio" data-style="btn-info" required="required" class="form-control" onchange="myFunction()">
+                          <option value="0">Selecionar Año</option>
+                          <option value="2018">2018</option>
+                          <option value="2017">2017</option>
+                        </select>
+                    </div>
+                        <!-- /.panel-body -->
+                    </div>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Asesores
+                            </div>
+                        <!-- /.panel-heading 
+                        <div class="panel-body">
+                            <div id="morris-area-chart"></div>
+                        </div>-->
+                        <div class="panel-body">
+                            <div id="chart-container-lines"></div>
+                        </div>
+
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                                        <!-- /.panel -->
+                    </div>
+                    <!-- /.panel -->
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Categorias de Productos
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="chart-container-circular">
+                                
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <!-- /.panel -->                
+                        
+                      <!-- /.panel-footer -->
+                    </div>
+                    <!-- /.panel .chat-panel -->
+               
+                <!-- /.col-lg-4 -->
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    
+                                    <!-- /.table-responsive -->
+                                </div>
+                                <!-- /.col-lg-4 (nested) -->
+                                <div class="col-lg-8">
+                                    <div id="morris-bar-chart"></div>
+                                </div>
+                                <!-- /.col-lg-8 (nested) -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+{% endblock %}
+{% block content_script_maps %}
+    <script src="{% static 'system/js/map-dmiro.js' %}">
+    </script>
+    <script>
+      Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+      });
+    </script>
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCT3_475CV9pDTRjoXvxOE3CGMparmDYlM&libraries=places&callback=initMap" async defer></script>
+ {% endblock %}

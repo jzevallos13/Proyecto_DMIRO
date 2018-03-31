@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static  %}
+{% block head_title %}BANCO D-MIRO{% endblock %}
+{% block jumbotron %}
+<div class="container">
+<div class='row'>
+<div class='col-sm-12'>
+  <h2></h2>
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+      <div class="item active">
+
+        <img  src='{% static "img/slider1.png" %}' alt="slider1" style="width:100;"/>
+      </div>
+
+      <div class="item">
+      	<img  src='{% static "img/slider2.jpg" %}' alt="slider2" style="width:100;"/>
+      </div>
+      <div class="item">
+      	<img  src='{% static "img/slider3.jpg" %}' alt="slider3" style="width:100;"/>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+      <span class="sr-only">Siguiente</span>
+    </a>
+  </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block content %}
+	{% if not request.user.is_staff %}
+	<!-- Page Content -->
+    <section >
+      <div class="container">
+        <h1 style="text-align: center;">Un Banco diferente</h1>
+        <div class='row'>
+        <div class='col-sm-2'>
+        <p><img class="alignnone size-full wp-image-1477" src="http://www.d-miro.com/wp-content/uploads/logo-dmiro-vertical.png" alt="logo-dmiro-vertical" width="135" height="140">
+        </p>
+         </div>
+         <div class='col-sm-10'>
+            <p></p><p></p>
+            <p style="text-align: justify;">
+            D-MIRO inicia en 1997 cuando Misión Alianza de Noruega en Ecuador,  preocupada por el desarrollo integral de los sectores más vulnerables, consideró contar con un brazo financiero y decide crear el Programa de Microfinanzas D-MIRO, y a finales del año 2006, la Fundación para el Desarrollo Microempresarial D-MIRO Misión Alianza Ecuador.
+            Viendo los resultados positivos que logró en la calidad de vida de las familias a las que apoyó, D-MIRO decide transformarse en un banco, e inicia sus operaciones el 18 de julio de 2011, abriendo las puertas al público en catorce oficinas ubicadas en nueve ciudades de la costa y en cinco provincias del Ecuador.
+            </p>
+          </div>
+      </div>
+      <div class='row'>
+      	<div class='col-sm-6'>
+
+      	</div>
+      	<div class='col-sm-6'>
+      	</div>
+      </div>
+      </div>
+    </section>
+	{% endif %}
+{% endblock %}
