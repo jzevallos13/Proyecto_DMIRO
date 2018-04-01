@@ -1,1 +1,2 @@
 Verificar Estructuras del Proyecto
+Instalar Programas y Base de Datos para realizar la migracion
