@@ -2,3 +2,4 @@ Verificar Estructuras del Proyecto
 Instalar Programas y Base de Datos para realizar la migracion
 Investigar Api de Fusuion Chart
 Investigar Api de highcharts Chart
+Pruebas en Archivos HTML para despleglar datos con Fusion Chart y highcharts
