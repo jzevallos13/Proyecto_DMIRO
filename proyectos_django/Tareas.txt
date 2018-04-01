@@ -1,2 +1,3 @@
 Verificar Estructuras del Proyecto
 Instalar Programas y Base de Datos para realizar la migracion
+Investigar Api de Fusuion Chart
