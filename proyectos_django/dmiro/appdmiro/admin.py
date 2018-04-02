@@ -13,5 +13,4 @@ class AdminRegistrado(admin.ModelAdmin):
 	search_fields = ["email","nombre"]
 	#class Meta:
 	#	model = Registrado
-
 admin.site.register(Registrado, AdminRegistrado)
