@@ -1,0 +1,97 @@
+{% extends "system_base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content_general %}
+
+<div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <br/>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Dashboard General
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <!-- /.panel -->                
+                        
+                      <!-- /.panel-footer -->
+                    </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+           
+            <div class="row"> 
+            <div class="col-xs-6 col-xs-offset-3 centered">
+                    
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading 
+                        <div class="panel-body">
+                            <div id="morris-area-chart"></div>
+                        </div>-->
+                        <div class="panel-body">
+                            <div id="chart-container-agencias">
+                            	
+                            </div>
+                        </div>
+
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                                        <!-- /.panel -->
+                    </div>
+                    <!-- /.panel -->
+                <!-- /.col-lg-8 -->
+                    <!-- /.panel .chat-panel -->
+               
+                <!-- /.col-lg-4 -->
+            </div>
+
+            <div class="row">
+                 <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="chart-container-productos">
+                                
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <!-- /.panel -->                
+                        
+                      <!-- /.panel-footer -->
+                    </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading 
+                        <div class="panel-body">
+                            <div id="morris-area-chart"></div>
+                        </div>-->
+                        <div class="panel-body">
+                            <div id="chart-container-barras-productos">
+                                
+                            </div>
+                        </div>
+
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                                        <!-- /.panel -->
+                    </div>
+                    <!-- /.panel -->
+                <!-- /.col-lg-8 -->           
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+        </div>
+{% endblock %}
+{% block script_general %}
+<script src="{% static 'system/js/general.js' %}">
+</script>
+{% endblock %}
