@@ -16,103 +16,98 @@
     width: 100% !important;
     height: 100% !important;
     }
-  </style>
+</style>
 {% endblock %}
 {% block content_detalles %}
-<div id="page-wrapper">
-{% include "system_gif_cabecera.html" %}
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> 
-                            Map
-                </div>
-                <div class="panel-body">
-                    <div id="mapa" style="width:400px ;height:300px"> 
+<div class="content-wrapper">
+    <div class="container-fluid">
+         {% include "system_gif_cabecera.html" %}  
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Dashboard Detallado</li>
+      </ol>
 
-                    </div>             
-                </div>
-            </div>
+     <div class="row">
+      <div class="col-lg-8">
+        <div class="card mb-2">
+        <div class="card-header">
+          <i class="fa fa-map-marker"></i> Mapas de Agencias</div>
+        <div class="card-body">
+        <div id="mapa" style="width:640px ;height:250px"> </div>  
         </div>
-        <div class="col-lg-6"> 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>
-                            Imagenes
-                </div>
-                <div class="panel-body">
-                    <div id="chart-container-img" style="width:400px ;height:300px">
+        <div class="card-footer small text-muted"></div>
+      </div>
+        </div>
+         <div class="col-lg-4">
+        <div class="card mb-2">
+        <div class="card-header">
+          <i class="fa fa-file-image-o"></i> Foto de la Agencia</div>
+        <div class="card-body">
+        <div id="chart-container-img" style="width:300px ;height:250px">
+                  <div id="agencia-seleccionada"></div>
                         <center>
-                            <img id="miimg" style="width:350px; height: 250px" class="img-rounded">
+                            <img id="miimg"  class="img-responsive">
                         </center>
                     </div>
-                </div>
-            </div>
+
+        </div>
+        <div class="card-footer small text-muted"></div>
+      </div>
         </div>
     </div>
-    <div class="row"> 
-        <div class="col-xs-6 col-xs-offset-3 centered">
-            <div class="panel panel-default">
-                <div id="selecionar-agencia" class="panel-heading">
-                            Seleccione la Agencia
-                </div>
-                <div class="panel-body">
-                    <div id="agencia-seleccionada"></div>
-                    <select id="selectAnio" data-style="btn-info" required="required" class="form-control" onchange="myFunction()">
+
+    <div class="row">
+      <div class="col-lg-12">
+      <div class="card mb-3">
+        <div class="card-header" id="selecionar-agencia"><i class="fa fa-search"> Consultar</i></div>
+        <div class="card-body">
+                    
+          <select id="selectAnio" data-style="btn-info" required="required" class="form-control" onchange="myFunction()">
                     <option value="0">Selecionar Año</option>
                     <option value="2018">2018</option>
                     <option value="2017">2017</option>
                     </select>
-                </div>
-            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Asesores
-                </div>
-                <div class="panel-body">
-                    <div id="chart-container-lines"></div>
-                </div>
-            </div>
         </div>
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Categorias de Productos
-                </div>
-                <div class="panel-body">
-                    <div id="chart-container-circular">  
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-4">
+      </div>
+  </div>
 
-                        </div>
-                        <div class="col-lg-8">
-                            <div id="morris-bar-chart">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="row">
+      <div class="col-lg-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> Asesores</div>
+        <div class="card-body">
+             <div id="chart-container-lines"></div>
         </div>
-    </div>
+        <div class="card-footer small text-muted"></div>
+      </div>
+  </div>
+  <div class="col-lg-6">
+        <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-pie-chart"></i> Categorias de Productos</div>
+        <div class="card-body">
+        <div id="chart-container-circular">  
+                    </div>
+        </div>
+        <div class="card-footer small text-muted"></div>
+      </div>
+  </div>
 </div>
+ </div>
+</div>
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © Banco D-Miro 2018</small>
+        </div>
+      </div>
+    </footer>
+    </div>
+  </div>
 {% endblock %}
 {% block content_script_maps %}
     <script src="{% static 'system/js/map-dmiro.js' %}">
