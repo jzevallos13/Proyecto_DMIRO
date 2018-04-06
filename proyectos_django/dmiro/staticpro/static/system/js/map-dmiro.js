@@ -1,25 +1,35 @@
 var marker = null;
 var id_agencia = 0;
 var jsonAgencias = $.getJSON("/app/api/mapAgencias");
+$(document).ready(function()
+{
+      jsonAgencias.done(function(data){
+      initMap(data);
+    });
+});
 
-
-function initMap() {
+function initMap(data) {
+    if(data != null)
+    {
     var marcadores = [];
     var datos = [];
-    jsonAgencias.done(function(data){
-      for (i in data['agencias']){
+    var agencia = [];
+    var agencia_nombre = [];
+    for (i in data['agencias']){
+        var id = data['agencias'][i]['id'];
+        var agenciaNombre = data['agencias'][i]['age_nombre'];
         var nombre = data['agencias'][i]['age_nombre'];
         var direccion = data['agencias'][i]['age_direccion'];
         var coordenadax = data['agencias'][i]['age_coordenadax'];
         var coordenaday = data['agencias'][i]['age_coordenaday'];
         datos = [nombre + " - " +direccion, coordenadax, coordenaday];
         marcadores.push(datos);
-      }
-    });
-    console.log(marcadores);
+        agencia.push(id);
+        agencia_nombre.push(agenciaNombre);
+    }
     var mapOptions = {
       center: new google.maps.LatLng(-2.1100639, -79.9557909),
-      zoom: 8,
+      zoom: 10,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById("mapa"),
@@ -33,30 +43,24 @@ function initMap() {
       });
       google.maps.event.addListener(marker, 'click', (function(marker, i) {return function() {
         infowindow.setContent(marcadores[i][0]);
-            infowindow.open(map, marker);    
-      jsonAgencias.done(function(data){
-      for (i in data['agencias']){
-        var id = data['agencias'][i]['id'];
-        var nombre = data['agencias'][i]['age_nombre'];
-        var coordenadax = data['agencias'][i]['age_coordenadax'];
-        if ((marker.position.lat() == coordenadax)){
-                id_agencia = id;
+            infowindow.open(map, marker);
+      if (marker.position.lat() == marcadores[i][1]){
+                id_agencia = agencia [i];
+                document.getElementById('miimg').src = "../../../../../static/img/"+agencia [i]+".jpg";
                 document.getElementById('chart-container-lines').innerHTML='';
                 document.getElementById('chart-container-circular').innerHTML='';
-                document.getElementById('selecionar-agencia').innerHTML='Agencia';
-                document.getElementById('agencia-seleccionada').innerHTML=nombre;
+                document.getElementById('agencia-seleccionada').innerHTML=agencia_nombre[i];
                 document.getElementById('selectAnio').selectedIndex = 0;
-           }
-          }
-        });	
+            }
           } 
         })(marker, i));
       } 
-   
+   }
     }
 
+
   function myFunction() {
-    anio = $("#selectAnio").val();
+    var anio = $("#selectAnio").val();
     if ((anio != 0) && (id_agencia != 0)){
       document.getElementById('chart-container-lines').innerHTML='';
       document.getElementById('chart-container-circular').innerHTML='';
@@ -75,7 +79,7 @@ function initMap() {
     }
 }
 
-       //Funcion Cargar Datos fusionBarras
+  //Funcion Cargar Datos fusionBarras
    function fusionLines(responseData){
       FusionCharts.ready(function () 
       {
@@ -109,8 +113,7 @@ function initMap() {
         mes = valor + 1;
       }
     })
-    //console.log(responseData); 
-  //console.log(responseData['datasetName']);
+    anio = $("#selectAnio").val();
     var cadena_asesor = String([responseData['datasetName']]);
     var split_cadena = cadena_asesor.split(",")[0];
     var split_spit_cadena = String(split_cadena);
@@ -119,7 +122,7 @@ function initMap() {
     //console.log(id_asesor);
     FusionCharts.ready(function () 
     {
-        $.getJSON("/app/api/fusionCircular/"+id_agencia+"/"+id_asesor+"/"+mes+"/", function(result)
+        $.getJSON("/app/api/fusionCircular/"+id_agencia+"/"+id_asesor+"/"+mes+"/"+anio+"/", function(result)
         {
             var revenueChart = new FusionCharts(
             {
@@ -143,7 +146,7 @@ function initMap() {
             type: 'column2d',
             renderAt: 'chart-container',
             width: '475',
-            height: '350',
+            height: '300',
             dataFormat: 'json',
             dataSource: responseData,
             "events": 
