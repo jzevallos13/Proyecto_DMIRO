@@ -202,6 +202,7 @@ function fusionBarrasProductos(responseData,id_productos,id_agencias)
     series: series_datos
 });
    }
+<<<<<<< HEAD
 
 function fusionLinesGeneral(responseData)
    {
@@ -259,7 +260,63 @@ function fusionLinesGeneral(responseData)
    } 
  
 
+=======
+>>>>>>> 0a93c0555bd69d32387be5addd3778e1a5a5a688
 
+function fusionLinesGeneral(responseData)
+   {
+    var series_datos = [];
+    var datos = {};
+    for (var i =0 ; i<=responseData['dataset'].length-1 ;i++)
+    {
+        datos = {};
+        datos['name'] = responseData['dataset'][i]['seriesname'];
+        datos['data'] = [];
+        for(var d=0; d<=responseData['dataset'][i]['data'].length-1 ;d++ ){
+             datos['data'].push(parseInt(responseData['dataset'][i]['data'][d]['value']));
+          }
+      series_datos.push(datos); 
+    }
+    Highcharts.chart('container-lines-general', {
+    chart: {
+        type: 'spline'
+    },
+    title: {
+        text: 'Productividad Anual de los Asesores'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    yAxis: {
+        title: {
+            text: 'Ingresos'
+        },
+        labels: {
+            formatter: function () {
+                return '$ ' + this.value;
+            }
+        }
+    },
+    tooltip: {
+        crosshairs: true,
+        shared: true
+    },
+    plotOptions: {
+        spline: {
+            marker: {
+                radius: 4,
+                lineColor: '#666666',
+                lineWidth: 1
+            }
+        }
+    },
+    series: series_datos
+});
+   } 
  
 
 
