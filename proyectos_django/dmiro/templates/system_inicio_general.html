@@ -2,65 +2,67 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block content_general %}
-<div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-           
-            <div class="row"> 
-            <div class="col-xs-6 col-xs-offset-3 centered">
-                    
-            </div>
+<div class="content-wrapper">
+    <div class="container-fluid">
+         {% include "system_gif_cabecera.html" %}  
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Dashboard General</li>
+      </ol> 
+      <div class="row">
+      <div class="col-md-4 offset-md-4">
+       <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-search"></i> Consulte</div>
+        <div class="card-body">
+          <select id="selectAnio" data-style="btn-info" required="required" class="form-control" onchange="myFunction()">
+                    <option value="0">Selecionar Año</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    </select>
         </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Asesores
-                            </div>
-                        <!-- /.panel-heading 
-                        <div class="panel-body">
-                            <div id="morris-area-chart"></div>
-                        </div>-->
-                        <div class="panel-body">
-                            <div id="container"></div>
-                        </div>
+      </div>
+    </div>
+    </div>
+      <div class="card mb-3" style="display: none" id="id-container-agencias">
+        <div class="card-header" >
+          <i class="fa fa-pie-chart"></i> Agencias</div>
+        <div class="card-body">
+            <div id="container-agencias"></div>
+        </div>
+        <div class="card-footer small text-muted"></div>
+      </div>
 
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                                        <!-- /.panel -->
-                    </div>
-                    <!-- /.panel -->
-                <!-- /.col-lg-8 -->
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Categorias de Productos
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div id="chart-container-circular">
-                                
+      <div class="card mb-3" style="display: none" id="id-container-barras-productos">
+        <div class="card-header">
+          <i class="fa fa-bar-chart"></i> Productos</div>
+        <div class="card-body">
+            <div id="container-barras-productos">
                             </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                    <!-- /.panel -->                
-                        
-                      <!-- /.panel-footer -->
-                    </div>
-                    <!-- /.panel .chat-panel -->
-               
-                <!-- /.col-lg-4 -->
-            </div>
-            <!-- /.row -->
         </div>
+        <div class="card-footer small text-muted"></div>
+      </div>
+      <div class="card mb-3" style="display: none" id="id-container-lines-general">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> Asesores</div>
+        <div class="card-body">
+      <div id="container-lines-general"></div>
+        </div>
+        <div class="card-footer small text-muted"></div>
+      </div>
+ </div>
+</div>
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © Banco D-Miro 2018</small>
+        </div>
+      </div>
+    </footer>
+    </div>
+  </div>
 {% endblock %}
 {% block script_general %}
 <script src="{% static 'system/js/general.js' %}">
