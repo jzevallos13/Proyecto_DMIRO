@@ -1,165 +1,286 @@
-var marker = null;
-var id_agencia = 0;
-var jsonAgencias = $.getJSON("/app/api/mapAgencias");
+var jsonCircular3DAgencias;
+var jsonBarrasProductos;
+var jsonLinesGeneral;
+var jsontodoProductos;
+var jsontodoAgencias;
+
 $(document).ready(function()
 {
-      jsonAgencias.done(function(data){
-      initMap(data);
-    });
+     myFunction();
 });
 
-function initMap(data) {
-    if(data != null)
-    {
-    var marcadores = [];
-    var datos = [];
-    var agencia = [];
-    var agencia_nombre = [];
-    for (i in data['agencias']){
-        var id = data['agencias'][i]['id'];
-        var agenciaNombre = data['agencias'][i]['age_nombre'];
-        var nombre = data['agencias'][i]['age_nombre'];
-        var direccion = data['agencias'][i]['age_direccion'];
-        var coordenadax = data['agencias'][i]['age_coordenadax'];
-        var coordenaday = data['agencias'][i]['age_coordenaday'];
-        datos = [nombre + " - " +direccion, coordenadax, coordenaday];
-        marcadores.push(datos);
-        agencia.push(id);
-        agencia_nombre.push(agenciaNombre);
-    }
-    var mapOptions = {
-      center: new google.maps.LatLng(-2.1100639, -79.9557909),
-      zoom: 10,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("mapa"),
-        mapOptions);
-       var infowindow = new google.maps.InfoWindow();
-    var marker, i;
-    for (i = 0; i < marcadores.length; i++) {  
-        marker = new google.maps.Marker({
-        position: new google.maps.LatLng(marcadores[i][1], marcadores[i][2]),
-        map: map
-      });
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {return function() {
-        infowindow.setContent(marcadores[i][0]);
-            infowindow.open(map, marker);
-      if (marker.position.lat() == marcadores[i][1]){
-                id_agencia = agencia [i];
-                document.getElementById('miimg').src = "../../../../../static/img/"+agencia [i]+".jpg";
-                document.getElementById('chart-container-lines').innerHTML='';
-                document.getElementById('chart-container-circular').innerHTML='';
-                document.getElementById('agencia-seleccionada').innerHTML=agencia_nombre[i];
-                document.getElementById('selectAnio').selectedIndex = 0;
-            }
-          } 
-        })(marker, i));
-      } 
-   }
-    }
+function myCargarJson(anio)
+{
+    jsonCircular3DAgencias = $.getJSON("/app/api/fusionCircular3DAgencias/"+anio);
+    jsonBarrasProductos = $.getJSON("/app/api/fusionBarrasProductos/"+anio);
+    jsonLinesGeneral = $.getJSON("/app/api/fusionLinesGeneral/"+anio);
+    jsontodoProductos = $.getJSON("/app/api/todoProductos/");
+    jsontodoAgencias = $.getJSON("/app/api/mapAgencias/");
+
+    jsonCircular3DAgencias.done(function(data){
+    fusionCircular3DAgencias(data);
+});
+    jsontodoProductos.done(function(data){
+        fusiontodoProductos(data);
+});
+    jsonLinesGeneral.done(function(data){
+    fusionLinesGeneral(data);
+});
+}
 
 
-  function myFunction() {
+function myFunction() { 
     var anio = $("#selectAnio").val();
-    if ((anio != 0) && (id_agencia != 0)){
-      document.getElementById('chart-container-lines').innerHTML='';
-      document.getElementById('chart-container-circular').innerHTML='';
-      var json = $.getJSON("/app/api/fusionLines/"+id_agencia+"/"+anio+"/");
-      json.done(function(data){
-        if(data['dataset'] == ''){
-          document.getElementById('chart-container-lines').innerHTML='';
-          document.getElementById('chart-container-circular').innerHTML='';
-        }
-        else{fusionLines(data);}
-      });
+    if ((anio != 0)){
+      document.getElementById('container-agencias').innerHTML='';
+      document.getElementById('container-barras-productos').innerHTML='';
+      document.getElementById('container-lines-general').innerHTML='';
+      document.getElementById("id-container-agencias").style.display = "block"; 
+      document.getElementById("id-container-barras-productos").style.display = "block";
+      document.getElementById("id-container-lines-general").style.display = "block";
+      myCargarJson(anio);
     }
-    else{
-      document.getElementById('chart-container-lines').innerHTML='';
-      document.getElementById('chart-container-circular').innerHTML='';
+    else{ 
+      document.getElementById('container-agencias').innerHTML='';
+      document.getElementById('container-barras-productos').innerHTML='';
+      document.getElementById('container-lines-general').innerHTML='';
+      document.getElementById("id-container-agencias").style.display = "none"; 
+      document.getElementById("id-container-barras-productos").style.display = "none";
+      document.getElementById("id-container-lines-general").style.display = "none";
     }
 }
 
-  //Funcion Cargar Datos fusionBarras
-   function fusionLines(responseData){
-      FusionCharts.ready(function () 
-      {
-          var revenueChart = new FusionCharts(
-          {
-            type: 'msline',
-            renderAt: 'chart-container-lines',
-            width: '475',
-            height: '350',
-            dataFormat: 'json',
-            dataSource: responseData,
-            "events": 
-            {
-                    "dataPlotClick": function (eventObj, dataObj) 
-                    {
-                      fusionCircular(dataObj);
-                    }
-            }
-          }).render();
-      });
-    //}
-   }
-  //FIN
-  //Funcion Cargar Datos fusionCircular
-   function fusionCircular(responseData)
-   {
-    var mes = 0;
-    lista_meses = ["Ene", "Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
-    lista_meses.forEach(function(elemento, valor){
-      if(responseData['categoryLabel'] == elemento){
-        mes = valor + 1;
+function fusiontodoProductos(responseData){
+    var id_productos = [];
+    var acum = 0;        
+    for(i in responseData['productos']){
+        var id = 0;
+        id = parseInt(responseData['productos'][acum]['id']);
+        id_productos.push(id);
+        acum = acum + 1;
       }
-    })
-    anio = $("#selectAnio").val();
-    var cadena_asesor = String([responseData['datasetName']]);
-    var split_cadena = cadena_asesor.split(",")[0];
-    var split_spit_cadena = String(split_cadena);
-    var split_split_spit_cadena = split_spit_cadena.split(":"); 
-    var id_asesor = parseInt(String(split_split_spit_cadena[1]));
-    //console.log(id_asesor);
-    FusionCharts.ready(function () 
+  jsontodoAgencias.done(function(data){
+        fusiontodoAgencias(data,id_productos);
+});   
+}
+
+function fusiontodoAgencias(responseData,id_productos){
+    var id_agencias = [];
+    var acum = 0;     
+    for(i in responseData['agencias']){
+        var id = 0;
+        id = parseInt(responseData['agencias'][acum]['id']);
+        id_agencias.push(id);
+        acum = acum + 1;
+      }
+   jsonBarrasProductos.done(function(data){
+      fusionBarrasProductos(data,id_productos,id_agencias);
+  }); 
+}
+
+function fusionCircular3DAgencias(responseData)
+   {
+    var series_datos = [];
+    for (var i =0 ; i<=responseData['data'].length-1 ;i++)
     {
-        $.getJSON("/app/api/fusionCircular/"+id_agencia+"/"+id_asesor+"/"+mes+"/"+anio+"/", function(result)
-        {
-            var revenueChart = new FusionCharts(
-            {
-              type: 'doughnut2d',
-              renderAt: 'chart-container-circular',
-              width: '475',
-              height: '350',
-              dataFormat: 'json',
-              dataSource: result
-             }).render();
-        });
-      });
-   }
-   //FIN
-   //Funcion Cargar Datos fusionBarras
-   function fusionBarras(responseData){
-      FusionCharts.ready(function () 
-      {
-          var revenueChart = new FusionCharts(
-          {
-            type: 'column2d',
-            renderAt: 'chart-container',
-            width: '475',
-            height: '300',
-            dataFormat: 'json',
-            dataSource: responseData,
-            "events": 
-            {
-                    "dataPlotClick": function (eventObj, dataObj) 
-                    {
-                      fusionCircular(dataObj);
-                    }
+        var datos = [];
+        datos.push(responseData['data'][i]['label'],parseInt(responseData['data'][i]['value']));
+        series_datos.push(datos);
+    }
+    Highcharts.chart('container-agencias', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+        }
+    },
+    title: {
+        text: 'Agencias en General'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
             }
-          }).render();
-      });
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Porcentaje de Ingresos ',
+        data: series_datos
+    }]
+});
+   }  
+
+function fusionBarrasProductos(responseData,id_productos,id_agencias)
+   {
+    var datos_arreglo = [0,0,0,0,0,0,0,0,0,0,0,0];
+    var series_datos = [];
+    var datos = {};
+    var nombre_agencia = "";
+    var stack_ID_agencia = 0;
+    for (var a = 0; a <= id_agencias.length -1 ; a++)
+    {
+      for (var p = 0; p <= id_productos.length -1 ; p++)
+      {
+        datos_arreglo = [0,0,0,0,0,0,0,0,0,0,0,0];
+        var verificar_ingreso = 0;
+        for(var d=0; d<=responseData['dataset'][a]['data'].length-1 ;d++ )
+        {
+          if(id_productos[p] == parseInt(responseData['dataset'][a]['data'][d]['value']['id_productos_id']))
+          {
+            nombre_agencia = responseData['dataset'][a]['seriesname'] + " " + responseData['dataset'][a]['data'][d]['value']['id_productos_id__pro_nombre'];
+            stack_ID_agencia = parseInt(responseData['dataset'][a]['data'][d]['value']['id_agencias_id']); 
+            var mes = responseData['dataset'][a]['data'][d]['value']['tra_mes'];
+            datos_arreglo[mes-1] = parseInt(responseData['dataset'][a]['data'][d]['value']['suma']);
+           // console.log(datos_arreglo);
+            verificar_ingreso = verificar_ingreso + 1;
+          }
+        }
+        if(verificar_ingreso != 0){
+        datos = {};
+        datos['name'] = nombre_agencia;
+        datos['data'] = datos_arreglo;
+        datos['stack'] = stack_ID_agencia;
+        series_datos.push(datos);
+        }
+      }
+    }
+Highcharts.setOptions({
+    lang: {
+        numericSymbols: null
+    }
+});
+    Highcharts.chart('container-barras-productos', {
+
+    chart: {
+        type: 'column'
+    },
+
+    title: {
+        text: 'Total de ingresos por agencias, agrupados por productos'
+    },
+
+    xAxis: {
+        categories: [
+            'Ene',
+            'Feb',
+            'Mar',
+            'Abr',
+            'May',
+            'Jun',
+            'Jul',
+            'Ago',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dic'
+        ],
+      //max:11
+    },
+    yAxis: {
+            labels: {
+                formatter: function () {
+                    return Highcharts.numberFormat(this.value, 2, ',', '.');
+                }
+            },
+        allowDecimals: true,
+        min: 0,
+        title: {
+            text: 'Ingresos $'
+        }
+    },
+
+    tooltip: {
+        formatter: function () {
+            return '<b>' + this.x + '</b><br/>' +
+                this.series.name + ': ' + Highcharts.numberFormat(this.y, 2, ',', '.') + '<br/>' +
+                'Total: ' +  Highcharts.numberFormat(this.point.stackTotal, 2, ',', '.');
+        }
+    },
+
+    plotOptions: {
+        column: {
+            stacking: 'normal'
+        }
+    },
+
+    series: series_datos
+});
    }
-  //FIN
+
+function fusionLinesGeneral(responseData)
+   {
+    var series_datos = [];
+    var datos = {};
+    for (var i =0 ; i<=responseData['dataset'].length-1 ;i++)
+    {
+        datos = {};
+        datos['name'] = responseData['dataset'][i]['seriesname'];
+        datos['data'] = [];
+        for(var d=0; d<=responseData['dataset'][i]['data'].length-1 ;d++ ){
+             datos['data'].push(parseInt(responseData['dataset'][i]['data'][d]['value']));
+          }
+      series_datos.push(datos); 
+    }
+    Highcharts.setOptions({
+    lang: {
+        numericSymbols: null,
+        decimalPoint: ',',
+        thousandsSep: '.'
+    }
+});
+    Highcharts.chart('container-lines-general', {
+    chart: {
+        type: 'spline'
+    },
+    title: {
+        text: 'Productividad Anual de los Asesores'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        title: {
+            text: 'Ingresos'
+        },
+        labels: {
+            formatter: function () {
+                return '$ ' + Highcharts.numberFormat(this.value, 2, ',', '.');;
+            }
+        }
+    },
+    tooltip: {
+        valueDecimals: 2,
+        crosshairs: true,
+        shared: true
+    },
+    plotOptions: {
+        spline: {
+            marker: {
+                radius: 4,
+                lineColor: '#666666',
+                lineWidth: 1
+            }
+        }
+    },
+    series: series_datos
+});
+   } 
+ 
  
 
 
